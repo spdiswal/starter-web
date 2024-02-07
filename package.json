@@ -1,17 +1,14 @@
 {
 	"$schema": "https://json.schemastore.org/package.json",
 	"private": true,
-	"bugs": "https://github.com/rainstormy/presets-web/issues",
+	"bugs": "https://github.com/spdiswal/starter-web/issues",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/rainstormy/presets-web.git"
+		"url": "git+https://github.com/spdiswal/starter-web.git"
 	},
 	"license": "MIT",
-	"author": "Steffen Diswal",
+	"author": "Steffen Diswal <11992328+spdiswal@users.noreply.github.com> (https://www.disw.dk)",
 	"type": "module",
-	"workspaces": [
-		"packages/*"
-	],
 	"scripts": {
 		"build": "tsc --build",
 		"release.prepare": "updraft --files CHANGELOG.adoc packages/*/package.json --release-version",

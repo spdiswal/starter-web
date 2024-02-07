@@ -2,9 +2,14 @@
 	"eslint.nodePath": ".yarn/sdks",
 	"prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
 	"search.exclude": {
-		"**/.yarn": true,
-		"**/.pnp.*": true,
-		"**/yarn.lock": true
+		".cache/": true,
+		".yarn/": true,
+		"dist/": true,
+		"node_modules/": true,
+		"storybook-static/": true,
+		".pnp.cjs": true,
+		".pnp.loader.mjs": true,
+		"yarn.lock": true
 	},
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.tsdk": ".yarn/sdks/typescript/lib",

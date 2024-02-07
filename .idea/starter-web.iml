@@ -6,8 +6,9 @@
       <excludePattern pattern=".cache" />
       <excludePattern pattern=".yarn" />
       <excludePattern pattern="dist" />
-      <excludePattern pattern=".pnp.*" />
-      <excludePattern pattern="README.md" />
+      <excludePattern pattern="node_modules" />
+      <excludePattern pattern=".pnp.cjs" />
+      <excludePattern pattern=".pnp.loader.mjs" />
       <excludePattern pattern="yarn.lock" />
     </content>
     <orderEntry type="inheritedJdk" />
