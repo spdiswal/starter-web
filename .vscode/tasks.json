@@ -17,42 +17,6 @@
 			"script": "validate",
 			"problemMatcher": [],
 			"label": "validate"
-		},
-		{
-			"type": "npm",
-			"script": "validate.format",
-			"problemMatcher": [],
-			"label": "validate.format"
-		},
-		{
-			"type": "npm",
-			"script": "validate.format.fix",
-			"problemMatcher": [],
-			"label": "validate.format.fix"
-		},
-		{
-			"type": "npm",
-			"script": "validate.format.nocache",
-			"problemMatcher": [],
-			"label": "validate.format.nocache"
-		},
-		{
-			"type": "npm",
-			"script": "validate.lint",
-			"problemMatcher": [],
-			"label": "validate.lint"
-		},
-		{
-			"type": "npm",
-			"script": "validate.lint.fix",
-			"problemMatcher": [],
-			"label": "validate.lint.fix"
-		},
-		{
-			"type": "npm",
-			"script": "validate.lint.nocache",
-			"problemMatcher": [],
-			"label": "validate.lint.nocache"
 		}
 	]
 }

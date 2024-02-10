@@ -13,26 +13,14 @@
 		"build": "tsc --build",
 		"release.prepare": "updraft --files CHANGELOG.adoc packages/*/package.json --release-version",
 		"setup": "yarn install && simple-git-hooks",
-		"validate": "yarn run build && concurrently 'yarn:validate.format' 'yarn:validate.lint' --group --names 'format','lint' --prefix-colors 'magenta.bold','cyan.bold'",
-		"validate.fix": "yarn run validate.lint.fix && yarn run validate.format.fix",
-		"validate.format": "        prettier './.github/**/*.yml' './.vscode/**/*.json' './packages/*/*.{json,ts}' './*.config.js' './*.{json,yml}' --log-level warn --check --cache --cache-location './.cache/prettier/.prettier-cache'",
-		"validate.format.fix": "    prettier './.github/**/*.yml' './.vscode/**/*.json' './packages/*/*.{json,ts}' './*.config.js' './*.{json,yml}' --log-level warn         --cache --cache-location './.cache/prettier/.prettier-cache' --list-different --write",
-		"validate.format.nocache": "prettier './.github/**/*.yml' './.vscode/**/*.json' './packages/*/*.{json,ts}' './*.config.js' './*.{json,yml}' --log-level warn --check",
-		"validate.lint": "        eslint './packages/*/*.ts' './*.config.js' --max-warnings 0 --cache --cache-location './.cache/eslint/'",
-		"validate.lint.fix": "    eslint './packages/*/*.ts' './*.config.js' --max-warnings 0 --cache --cache-location './.cache/eslint/' --fix",
-		"validate.lint.nocache": "eslint './packages/*/*.ts' './*.config.js' --max-warnings 0"
+		"validate": "yarn run build"
 	},
 	"simple-git-hooks": {
-		"pre-commit": "yarn run build && yarn run concurrently 'yarn:validate.format' 'yarn:validate.lint' --group --names 'format','lint' --prefix-colors 'magenta.bold','cyan.bold'"
+		"pre-commit": "yarn run build"
 	},
 	"devDependencies": {
-		"@rainstormy/presets-eslint": "workspace:*",
-		"@rainstormy/presets-prettier": "workspace:*",
 		"@rainstormy/updraft": "1.0.0",
-		"concurrently": "8.2.2",
 		"downdoc": "1.0.2-stable",
-		"eslint": "8.56.0",
-		"prettier": "3.2.5",
 		"simple-git-hooks": "2.9.0",
 		"typescript": "5.3.3"
 	},
@@ -41,17 +29,9 @@
 		"node": ">=20.0.0"
 	},
 	"//": {
-		"scripts": {
-			"validate.fix": "The formatter must run after the linter to resolve potential formatting issues introduced by the linter."
-		},
 		"devDependencies": {
-			"@rainstormy/presets-eslint": "This preset provides a predefined, opinionated ESLint configuration for TypeScript projects.",
-			"@rainstormy/presets-prettier": "This preset provides a predefined, opinionated Prettier configuration for TypeScript projects.",
 			"@rainstormy/updraft": "Updraft is a release automation tool.",
-			"concurrently": "This tool executes multiple package scripts in parallel.",
 			"downdoc": "Downdoc converts AsciiDoc documents to Markdown to improve compatibility with npm.",
-			"eslint": "ESLint uses static program analysis to uncover code issues.",
-			"prettier": "Prettier is an opinionated code formatter.",
 			"simple-git-hooks": "This tool lets the `package.json` file define Git hooks.",
 			"typescript": "TypeScript is a statically typed programming language on top of JavaScript."
 		}

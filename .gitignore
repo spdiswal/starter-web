@@ -1,32 +1,33 @@
-# Exclude certain files and directories from version control.
+# Exclude build artifacts, caches, personalised files, and sensitive information from version control.
 # https://git-scm.com/docs/gitignore
 # https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# IntelliJ IDEA.
+# Development tools and IDEs
+.cache/
 .idea/*
 !.idea/runConfigurations/
 !.idea/*.iml
 !.idea/externalDependencies.xml
 !.idea/jsonSchemas.xml
 !.idea/modules.xml
-!.idea/prettier.xml
 !.idea/vcs.xml
-
-# Visual Studio Code.
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/tasks.json
-
-# AsciiDoctor.
-.asciidoctor/*
-.asciidoctorconfig
-
-# Local environment.
+node_modules/
 *.local
 *.local.*
 
-# Dependency management.
+# Operating system artifacts
+*~
+.DS_Store
+Thumbs.db
+
+# Vite
+dist/
+
+# Yarn
 .yarn/*
 !.yarn/cache/
 !.yarn/patches/
@@ -34,13 +35,3 @@
 !.yarn/releases/
 !.yarn/sdks/
 !.yarn/versions/
-
-# Build artifacts.
-.cache/
-packages/*/dist/
-packages/*/README.md
-
-# Operating system artifacts.
-*~
-.DS_Store
-Thumbs.db

@@ -1,13 +1,10 @@
 # Normalise line endings in the repository and in the working directory.
 # https://git-scm.com/docs/gitattributes
 # https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings
-
 *                    text=auto eol=lf
-
 
 # Exclude certain files from the language statistics in GitHub.
 # https://github.com/github/linguist
-
 /.yarn/**            linguist-vendored
 /.yarn/releases/*    binary
 /.yarn/plugins/**/*  binary
