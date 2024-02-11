@@ -14,16 +14,21 @@
 		"node": ">=20.11.1"
 	},
 	"scripts": {
-		"build": "tsc --build",
-		"setup": "pnpm install && simple-git-hooks",
-		"validate": "yarn run build"
+		"check.types": "tsc",
+		"setup": "pnpm install && simple-git-hooks"
 	},
 	"simple-git-hooks": {
-		"pre-commit": "pnpm build"
+		"pre-commit": "pnpm check.types"
+	},
+	"dependencies": {
+		"tslib": "2.6.2"
+	},
+	"// dependencies": {
+		"tslib": "A runtime library that optimises TypeScript applications when the `importHelpers` option is enabled in `tsconfig.json`."
 	},
 	"devDependencies": {
 		"simple-git-hooks": "2.9.0",
-		"typescript": "5.3.3"
+		"typescript": "5.4.3"
 	},
 	"//": {
 		"devDependencies": {

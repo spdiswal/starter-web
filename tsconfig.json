@@ -1,26 +1,38 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": [
-		"./packages/presets-typescript/check",
-		"./packages/presets-typescript/target-node-es2023"
-	],
 	"compilerOptions": {
-		"baseUrl": "./"
+		"allowJs": false,
+		"baseUrl": "./",
+		"checkJs": false,
+		"esModuleInterop": true,
+		"exactOptionalPropertyTypes": false,
+		"forceConsistentCasingInFileNames": true,
+		"importHelpers": true,
+		"incremental": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"lib": ["DOM", "DOM.Iterable", "ES2023", "WebWorker"],
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"noEmit": true,
+		"noImplicitAny": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"paths": {
+			"+module/*": ["app/module/*"]
+		},
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "ESNext",
+		"tsBuildInfoFile": "node_modules/.cache/typescript/.tsbuildinfo",
+		"useDefineForClassFields": true,
+		"verbatimModuleSyntax": true
 	},
-	"references": [
-		{ "path": "./packages/presets-eslint" },
-		{ "path": "./packages/presets-eslint-jsx" },
-		{ "path": "./packages/presets-eslint-next" },
-		{ "path": "./packages/presets-eslint-preact" },
-		{ "path": "./packages/presets-eslint-react" },
-		{ "path": "./packages/presets-eslint-solid" },
-		{ "path": "./packages/presets-eslint-storybook" },
-		{ "path": "./packages/presets-eslint-tailwind" },
-		{ "path": "./packages/presets-eslint-testing-library" },
-		{ "path": "./packages/presets-eslint-vitest" },
-		{ "path": "./packages/presets-prettier" },
-		{ "path": "./packages/presets-prettier-css" },
-		{ "path": "./packages/presets-prettier-tailwind" }
-	],
-	"include": ["./packages/*/*.ts", "./*.config.js"]
+	"include": ["**/*.ts", "**/*.tsx"],
+	"exclude": ["dist/", "node_modules/", "storybook-static/"]
 }

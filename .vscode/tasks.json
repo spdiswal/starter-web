@@ -2,21 +2,15 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "build",
+			"script": "check.types",
 			"problemMatcher": [],
-			"label": "build"
+			"label": "check.types"
 		},
 		{
 			"type": "npm",
 			"script": "setup",
 			"problemMatcher": [],
 			"label": "setup"
-		},
-		{
-			"type": "npm",
-			"script": "validate",
-			"problemMatcher": [],
-			"label": "validate"
 		}
 	]
 }
