@@ -3,13 +3,9 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <excludePattern pattern=".cache" />
-      <excludePattern pattern=".yarn" />
-      <excludePattern pattern="dist" />
-      <excludePattern pattern="node_modules" />
-      <excludePattern pattern=".pnp.cjs" />
-      <excludePattern pattern=".pnp.loader.mjs" />
-      <excludePattern pattern="yarn.lock" />
+      <excludeFolder url="file://$MODULE_DIR$/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/storybook-static" />
+      <excludePattern pattern="pnpm-lock.yaml" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

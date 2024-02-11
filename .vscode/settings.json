@@ -1,14 +1,10 @@
 {
 	"search.exclude": {
-		".cache/": true,
-		".yarn/": true,
 		"dist/": true,
 		"node_modules/": true,
 		"storybook-static/": true,
-		".pnp.cjs": true,
-		".pnp.loader.mjs": true,
-		"yarn.lock": true
+		"pnpm-lock.yaml": true
 	},
 	"typescript.enablePromptUseWorkspaceTsdk": true,
-	"typescript.tsdk": ".yarn/sdks/typescript/lib"
+	"typescript.tsdk": "node_modules/typescript/lib"
 }

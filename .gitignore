@@ -3,7 +3,6 @@
 # https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
 # Development tools and IDEs
-.cache/
 .idea/*
 !.idea/runConfigurations/
 !.idea/*.iml
@@ -15,7 +14,6 @@
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/tasks.json
-node_modules/
 *.local
 *.local.*
 
@@ -24,14 +22,8 @@ node_modules/
 .DS_Store
 Thumbs.db
 
+# pnpm
+node_modules/
+
 # Vite
 dist/
-
-# Yarn
-.yarn/*
-!.yarn/cache/
-!.yarn/patches/
-!.yarn/plugins/
-!.yarn/releases/
-!.yarn/sdks/
-!.yarn/versions/
