@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="setup" type="js.build_tools.npm" nameIsGenerated="true">
+  <configuration default="false" name="no-verify" type="js.build_tools.npm" activateToolWindowBeforeRun="false" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="setup" />
+      <script value="no-verify" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

@@ -15,10 +15,8 @@
 	},
 	"scripts": {
 		"check.types": "tsc",
-		"setup": "pnpm install && simple-git-hooks"
-	},
-	"simple-git-hooks": {
-		"pre-commit": "pnpm check.types"
+		"no-verify": "pnpm lefthook uninstall",
+		"ready": "pnpm install && pnpm lefthook install"
 	},
 	"dependencies": {
 		"tslib": "2.6.2"
@@ -27,13 +25,11 @@
 		"tslib": "A runtime library that optimises TypeScript applications when the `importHelpers` option is enabled in `tsconfig.json`."
 	},
 	"devDependencies": {
-		"simple-git-hooks": "2.9.0",
+		"lefthook": "1.6.7",
 		"typescript": "5.4.3"
 	},
-	"//": {
-		"devDependencies": {
-			"simple-git-hooks": "This tool lets the `package.json` file define Git hooks.",
-			"typescript": "TypeScript is a statically typed programming language on top of JavaScript."
-		}
+	"// devDependencies": {
+		"lefthook": "Lefthook is a Git hooks manager.",
+		"typescript": "TypeScript is a statically typed programming language on top of JavaScript."
 	}
 }

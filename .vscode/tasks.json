@@ -8,9 +8,15 @@
 		},
 		{
 			"type": "npm",
-			"script": "setup",
+			"script": "no-verify",
 			"problemMatcher": [],
-			"label": "setup"
+			"label": "no-verify"
+		},
+		{
+			"type": "npm",
+			"script": "ready",
+			"problemMatcher": [],
+			"label": "ready"
 		}
 	]
 }
