@@ -2,9 +2,15 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "check.types",
+			"script": "check",
 			"problemMatcher": [],
-			"label": "check.types"
+			"label": "check"
+		},
+		{
+			"type": "npm",
+			"script": "fmt",
+			"problemMatcher": [],
+			"label": "fmt"
 		},
 		{
 			"type": "npm",

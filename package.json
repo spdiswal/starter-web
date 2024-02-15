@@ -14,7 +14,8 @@
 		"node": ">=20.11.1"
 	},
 	"scripts": {
-		"check.types": "tsc",
+		"check": "biome ci . && tsc",
+		"fmt": "biome check --apply .",
 		"no-verify": "pnpm lefthook uninstall",
 		"ready": "pnpm install && pnpm lefthook install"
 	},
@@ -25,10 +26,12 @@
 		"tslib": "A runtime library that optimises TypeScript applications when the `importHelpers` option is enabled in `tsconfig.json`."
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.6.1",
 		"lefthook": "1.6.7",
 		"typescript": "5.4.3"
 	},
 	"// devDependencies": {
+		"@biomejs/biome": "Biome is an opinionated linter and code formatter.",
 		"lefthook": "Lefthook is a Git hooks manager.",
 		"typescript": "TypeScript is a statically typed programming language on top of JavaScript."
 	}

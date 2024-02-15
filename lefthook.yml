@@ -1,6 +1,12 @@
 # Define Git hooks.
 # https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
 
+pre-commit:
+  commands:
+    pnpm-fmt:
+      run: pnpm fmt
+      stage_fixed: true
+
 post-checkout:
   commands:
     pnpm-install-on-lockfile-change:

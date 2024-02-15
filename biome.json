@@ -1,0 +1,83 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.6.1/schema.json",
+	"files": {
+		"ignore": [".idea/", "dist/", "node_modules/", "storybook-static/"]
+	},
+	"javascript": {
+		"formatter": {
+			"semicolons": "asNeeded"
+		}
+	},
+	"linter": {
+		"rules": {
+			"all": true,
+			"correctness": {
+				"noUndeclaredVariables": "off"
+			},
+			"style": {
+				"noNamespace": "off",
+				"useConsistentArrayType": {
+					"level": "error",
+					"options": { "syntax": "generic" }
+				},
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": {
+						"filenameCases": ["PascalCase"]
+					}
+				}
+			},
+			"suspicious": {
+				"useAwait": "off"
+			},
+			"nursery": {
+				"all": true,
+				"noUndeclaredDependencies": "off",
+				"useSortedClasses": "off"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"include": [
+				"app/**/*.stories.ts",
+				"app/**/*.stories.tsx",
+				"app/**/*.testdata.ts",
+				"app/**/*.testdata.tsx",
+				"app/**/*.tests.ts",
+				"app/**/*.tests.tsx"
+			],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"noExcessiveCognitiveComplexity": {
+							"level": "error",
+							"options": {
+								"maxAllowedComplexity": 2
+							}
+						}
+					}
+				}
+			}
+		},
+		{
+			"include": [".storybook/*.ts", "*.config.ts", "*.d.ts"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useFilenamingConvention": {
+							"level": "error",
+							"options": {
+								"filenameCases": ["kebab-case"]
+							}
+						}
+					},
+					"nursery": {
+						"noNodejsModules": "off",
+						"useImportRestrictions": "off"
+					}
+				}
+			}
+		}
+	]
+}
