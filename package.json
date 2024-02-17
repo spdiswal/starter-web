@@ -15,9 +15,13 @@
 	},
 	"scripts": {
 		"check": "biome ci . && tsc",
+		"dev": "vite",
 		"fmt": "biome check --apply .",
 		"no-verify": "pnpm lefthook uninstall",
-		"ready": "pnpm install && pnpm lefthook install"
+		"ready": "pnpm install && pnpm lefthook install",
+		"test": "vitest run",
+		"test.coverage": "vitest run --coverage",
+		"vi": "vitest watch --coverage --ui"
 	},
 	"dependencies": {
 		"tslib": "2.6.2"
@@ -27,12 +31,22 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.6.1",
+		"@types/node": "20.11.30",
+		"@vitest/coverage-v8": "1.4.0",
+		"@vitest/ui": "1.4.0",
 		"lefthook": "1.6.7",
-		"typescript": "5.4.3"
+		"typescript": "5.4.3",
+		"vite": "5.2.2",
+		"vitest": "1.4.0"
 	},
 	"// devDependencies": {
 		"@biomejs/biome": "Biome is an opinionated linter and code formatter.",
+		"@types/node": "These type definitions cover Node.js modules.",
+		"@vitest/coverage-v8": "This Vitest plugin reports code coverage.",
+		"@vitest/ui": "This Vitest plugin provides a test overview in the web browser.",
 		"lefthook": "Lefthook is a Git hooks manager.",
-		"typescript": "TypeScript is a statically typed programming language on top of JavaScript."
+		"typescript": "TypeScript is a statically typed programming language on top of JavaScript.",
+		"vite": "Vite is a development server and a bundler.",
+		"vitest": "Vitest is a unit testing framework."
 	}
 }

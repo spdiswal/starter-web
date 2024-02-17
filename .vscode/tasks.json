@@ -8,6 +8,12 @@
 		},
 		{
 			"type": "npm",
+			"script": "dev",
+			"problemMatcher": [],
+			"label": "dev"
+		},
+		{
+			"type": "npm",
 			"script": "fmt",
 			"problemMatcher": [],
 			"label": "fmt"
@@ -23,6 +29,24 @@
 			"script": "ready",
 			"problemMatcher": [],
 			"label": "ready"
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"problemMatcher": [],
+			"label": "test"
+		},
+		{
+			"type": "npm",
+			"script": "test.coverage",
+			"problemMatcher": [],
+			"label": "test.coverage"
+		},
+		{
+			"type": "npm",
+			"script": "vi",
+			"problemMatcher": [],
+			"label": "vi"
 		}
 	]
 }
