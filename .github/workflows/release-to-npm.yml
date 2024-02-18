@@ -1,15 +1,15 @@
-# This workflow publishes all packages to the npm registry.
+# This workflow publishes the package to the npm registry.
 #
-# It is triggered automatically by pushing a Git tag with a `v` prefix, as done by the `release-tag` workflow.
+# It is triggered automatically by pushing a Git tag with a `v` prefix, as done by the `release-tag.yml` workflow.
 #
 # It can be triggered manually via the GitHub CLI:
 #   gh workflow run release-to-npm.yml --ref <tag-name>
 #   gh run watch
 #
 # It can be triggered manually via the GitHub web interface:
-#   https://github.com/rainstormy/presets-web/actions/workflows/release-to-npm.yml
+#   https://github.com/spdiswal/starter-web/actions/workflows/release-to-npm.yml
 
-name: Release / Publish npm packages
+name: Release / Publish npm package
 
 on:
   push:
@@ -26,61 +26,50 @@ concurrency:
 # Minimise the permission scope of the default GitHub access token in this workflow.
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#permissions
 permissions:
-  contents: read # Allows the workflow to check out the repository and to call the reusable `ci` workflow.
-  id-token: write # Allows the workflow to publish the npm packages with provenance.
+  contents: read # Allow all jobs to check out the repository and to call the reusable `ci.yml` workflow.
 
+# All third-party actions are pinned to a specific commit SHA for security reasons.
+# https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
 jobs:
   validate-software-quality:
     name: Validate software quality
     uses: ./.github/workflows/ci.yml
 
-  publish-npm-packages:
+  publish-npm-package:
+    name: Publish '@spdiswal/starter-web' to npm
     needs: validate-software-quality
-    strategy:
-      fail-fast: true
-      matrix:
-        package-name:
-          - presets-eslint
-          - presets-eslint-jsx
-          - presets-eslint-next
-          - presets-eslint-preact
-          - presets-eslint-react
-          - presets-eslint-solid
-          - presets-eslint-storybook
-          - presets-eslint-tailwind
-          - presets-eslint-testing-library
-          - presets-eslint-vitest
-          - presets-prettier
-          - presets-prettier-css
-          - presets-prettier-tailwind
-          - presets-typescript
-    name: Publish '@rainstormy/${{ matrix.package-name }}' to npm
     runs-on: ubuntu-22.04
     timeout-minutes: 1
+    permissions:
+      id-token: write # Allow npm to publish the package with provenance.
     steps:
       - name: Check out the repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # https://github.com/actions/checkout/releases/tag/v4.1.1 (pinned to the commit SHA)
-      - name: Restore the build artifacts
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # https://github.com/actions/checkout/releases/tag/v4.1.1
+        #
+      - name: Restore build artifacts
         uses: ./.github/actions/build-artifacts
-      - name: Install Yarn and third-party dependencies
-        uses: ./.github/actions/yarn-zero-install-cache
+        #
+      - name: Install pnpm and third-party dependencies
+        uses: ./.github/actions/pnpm
         with:
           registry-url: https://registry.npmjs.org
-      - name: Convert README.adoc to Markdown
-        # npm has better compatibility for Markdown documents than AsciiDoc documents.
+        #
+      - name: Delete development-related fields in package.json
+        run: pnpm pkg delete "packageManager" "scripts" "// dependencies" "// devDependencies"
+        #
+      - name: Detect the appropriate package tag from the Git tag name
+        id: get-package-tag
         run: |
-          yarn run downdoc ./packages/${{ matrix.package-name }}/README.adoc
-          rm ./packages/${{ matrix.package-name }}/README.adoc
-      - name: Delete unnecessary fields in package.json
-        run: |
-          cd ./packages/${{ matrix.package-name }}
-          npm pkg delete "//"
-      - name: Generate a package tarball
-        # `yarn pack` resolves dependencies with Yarn-specific protocols such as `workspace:` before publishing.
-        run: |
-          cd ./packages/${{ matrix.package-name }}
-          yarn pack --out ${{ matrix.package-name }}.tgz
+          if [[ $TAG_NAME == *"-"* || $TAG_NAME == *"+"* ]]; then
+            echo "package-tag=next" >> $GITHUB_OUTPUT
+          else
+            echo "package-tag=latest" >> $GITHUB_OUTPUT
+          fi
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        #
       - name: Publish the package to npm
-        run: npm publish ./packages/${{ matrix.package-name }}/${{ matrix.package-name }}.tgz --provenance --access public
+        run: pnpm publish --provenance --access public --tag $PACKAGE_TAG
         env:
           NODE_AUTH_TOKEN: ${{ secrets.BOT_NIMBUS_NPM_TOKEN }}
+          PACKAGE_TAG: ${{ steps.get-package-tag.outputs.package-tag }}

@@ -1,15 +1,17 @@
-# This workflow validates the software quality.
+# This workflow implements the continuous integration (CI) pipeline.
+# It validates the software quality and produces build artifacts that can be deployed at a later stage.
 #
-# It is triggered automatically by pull requests towards the `main` branch.
+# It is triggered automatically by pull requests opened towards the `main` branch.
 #
-# It can be triggered manually via the GitHub CLI:
+# It can be triggered manually on any branch via the GitHub CLI:
+#
 #   gh workflow run ci.yml [--ref <branch-name>]
 #   gh run watch
 #
-# It can be triggered manually via the GitHub web interface:
-#   https://github.com/rainstormy/presets-web/actions/workflows/ci.yml
+# It can be triggered manually on any branch via the GitHub web interface:
+#   https://github.com/spdiswal/starter-web/actions/workflows/ci.yml
 
-name: Continuous integration
+name: CI
 
 on:
   pull_request:
@@ -22,7 +24,7 @@ on:
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#concurrency
 concurrency:
   # For `workflow_call` events, `github.workflow` is the caller workflow instead of this workflow.
-  # The `ci-` prefix here prevents collisions with other jobs in the caller workflow.
+  # The `ci-` prefix makes GitHub Actions distinguish this job from other jobs in the caller workflow.
   # https://docs.github.com/en/actions/using-workflows/reusing-workflows
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -30,90 +32,119 @@ concurrency:
 # Minimise the permission scope of the default GitHub access token in this workflow.
 # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#permissions
 permissions:
-  contents: read # Allows the workflow to check out the repository.
+  contents: read # Allow all jobs to check out the repository.
 
+# All third-party actions are pinned to a specific commit SHA for security reasons.
+# https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
 jobs:
-  validate-commit-messages:
+  can-build-project:
+    name: Can build the project
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # https://github.com/actions/checkout/releases/tag/v4.1.1
+        #
+      - name: Skip if already built
+        id: skip-if-already-built
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # https://github.com/actions/cache/releases/tag/v4.0.2
+        with:
+          # If an exact cache hit occurs, another workflow run on this branch has already built the project in the current configuration, and we can skip the rest of the job.
+          # This is especially useful upon rebasing interactively.
+          #
+          # CAUTION: The cache key is repeated in `.github/actions/build-artifacts/action.yml` to restore the build artifacts.
+          key: can-build-project-${{ runner.os }}-sha256:${{ hashFiles('app/**/*', '!app/**/*.stories.*', '!app/**/*.testdata.*', '!app/**/*.tests.*', '*.ts', '.nvmrc', 'pnpm-lock.yaml', 'tsconfig.json') }}
+          path: dist/
+        #
+      - name: Install pnpm and third-party dependencies
+        if: steps.skip-if-already-built.outputs.cache-hit != 'true'
+        uses: ./.github/actions/pnpm
+        #
+      - name: Build the project
+        if: steps.skip-if-already-built.outputs.cache-hit != 'true'
+        run: pnpm build
+
+  has-clean-code:
+    name: Has clean code
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # https://github.com/actions/checkout/releases/tag/v4.1.1
+        #
+      - name: Skip if already verified
+        id: skip-if-already-verified
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # https://github.com/actions/cache/releases/tag/v4.0.2
+        with:
+          # If an exact cache hit occurs, another workflow run on this branch has already verified that the source code is clean in the current configuration, and we can skip the rest of the job.
+          # This is especially useful upon rebasing interactively.
+          key: has-clean-code-${{ runner.os }}-sha256:${{ hashFiles('.github/**/*', '.storybook/**/*', '.vscode/*.json', 'app/**/*', 'docs/**/*.md', '*.json', '*.ts', '.nvmrc', 'pnpm-lock.yaml') }}
+          path: node_modules/.cache/typescript/
+        #
+      - name: Install pnpm and third-party dependencies
+        if: steps.skip-if-already-verified.outputs.cache-hit != 'true'
+        uses: ./.github/actions/pnpm
+        #
+      - name: Verify that the source code is type-safe and well-formatted
+        if: steps.skip-if-already-verified.outputs.cache-hit != 'true'
+        run: pnpm check
+
+  satisfies-unit-tests:
+    name: Satisfies unit tests
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # https://github.com/actions/checkout/releases/tag/v4.1.1
+        #
+      - name: Skip if already verified
+        id: skip-if-already-verified
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # https://github.com/actions/cache/releases/tag/v4.0.2
+        with:
+          # If an exact cache hit occurs, another workflow run on this branch has already verified that the source code satisfies the unit tests in the current configuration, and we can skip the rest of the job.
+          # This is especially useful upon rebasing interactively.
+          key: satisfies-unit-tests-${{ runner.os }}-sha256:${{ hashFiles('app/**/*', '!app/**/*.stories.*', '*.ts', '.nvmrc', 'pnpm-lock.yaml', 'tsconfig.json') }}
+          path: node_modules/.cache/vitest/
+        #
+      - name: Install pnpm and third-party dependencies
+        if: steps.skip-if-already-verified.outputs.cache-hit != 'true'
+        uses: ./.github/actions/pnpm
+        #
+      - name: Verify that the source code satisfies the unit tests
+        if: steps.skip-if-already-verified.outputs.cache-hit != 'true'
+        run: pnpm test
+
+  has-standardised-commit-messages:
     name: Has standardised commit messages
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-22.04
     timeout-minutes: 1
+    permissions:
+      pull-requests: read # Allow `rainstormy/github-action-validate-commit-messages` to read the commit messages in the pull request.
     steps:
-      - name: Run the validation task
-        uses: rainstormy/github-action-validate-commit-messages@158b8e35c5e89cf6a10b611efe20ac70cd51983a # https://github.com/rainstormy/github-action-validate-commit-messages/releases/tag/v1.1.4 (pinned to the commit SHA)
+      - name: Verify that the commit messages are standardised
+        uses: rainstormy/github-action-validate-commit-messages@158b8e35c5e89cf6a10b611efe20ac70cd51983a # https://github.com/rainstormy/github-action-validate-commit-messages/releases/tag/v1.1.4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          rules: acknowledged-author-email-addresses, acknowledged-author-names, acknowledged-committer-email-addresses, acknowledged-committer-names, capitalised-subject-lines, empty-line-after-subject-lines, imperative-subject-lines, limit-length-of-body-lines, limit-length-of-subject-lines, multi-word-subject-lines, no-co-authors, no-merge-commits, no-revert-revert-commits, no-squash-commits, no-trailing-punctuation-in-subject-lines, no-unexpected-whitespace, unique-subject-lines
+          rules: |
+            acknowledged-author-email-addresses,
+            acknowledged-author-names,
+            acknowledged-committer-email-addresses,
+            acknowledged-committer-names,
+            capitalised-subject-lines,
+            empty-line-after-subject-lines,
+            imperative-subject-lines,
+            limit-length-of-body-lines,
+            limit-length-of-subject-lines,
+            multi-word-subject-lines,
+            no-co-authors,
+            no-merge-commits,
+            no-revert-revert-commits,
+            no-squash-commits,
+            no-trailing-punctuation-in-subject-lines,
+            no-unexpected-whitespace,
+            unique-subject-lines,
           acknowledged-author-email-addresses--patterns: '\d+\+.+@users\.noreply\.github\.com' # A personal noreply email address on GitHub.
           acknowledged-author-names--patterns: '\p{Lu}.*\s.+' # A name of at least two words where the first word starts with a capital letter.
           acknowledged-committer-email-addresses--patterns: '\d+\+.+@users\.noreply\.github\.com' # A personal noreply email address on GitHub.
           acknowledged-committer-names--patterns: '\p{Lu}.*\s.+' # A name of at least two words where the first word starts with a capital letter.
-
-  validate-build:
-    name: Can build all packages (TypeScript)
-    runs-on: ubuntu-22.04
-    timeout-minutes: 1
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # https://github.com/actions/checkout/releases/tag/v4.1.1 (pinned to the commit SHA)
-      - name: Restore the build artifacts
-        id: cache-build-artifacts
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # https://github.com/actions/cache/releases/tag/v3.3.2 (pinned to the commit SHA)
-        with:
-          path: ./packages/*/dist/
-          key: ${{ runner.os }}-build-artifacts-${{ hashFiles('packages/*/*.ts', 'yarn.lock') }}
-      - name: Restore the TypeScript cache
-        if: steps.cache-build-artifacts.outputs.cache-hit != 'true'
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # https://github.com/actions/cache/releases/tag/v3.3.2 (pinned to the commit SHA)
-        with:
-          path: ./.cache/typescript/
-          key: ${{ runner.os }}-typescript-${{ hashFiles('packages/*/tsconfig.json', 'tsconfig.json', 'yarn.lock') }}
-          # We omit `restore-keys` to prevent cache restoration when the TypeScript configuration or any third-party dependencies have changed.
-      - name: Install Yarn and third-party dependencies
-        if: steps.cache-build-artifacts.outputs.cache-hit != 'true'
-        uses: ./.github/actions/yarn-zero-install-cache
-      - name: Revalidate the build artifacts
-        if: steps.cache-build-artifacts.outputs.cache-hit != 'true'
-        run: yarn run build
-
-  validate-format:
-    needs: validate-build # The Prettier configuration in this project uses the Prettier presets; hence, to operate, it requires the build artifacts.
-    name: Has well-formatted code (Prettier)
-    runs-on: ubuntu-22.04
-    timeout-minutes: 1
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # https://github.com/actions/checkout/releases/tag/v4.1.1 (pinned to the commit SHA)
-      - name: Restore the build artifacts
-        uses: ./.github/actions/build-artifacts
-      - name: Restore the Prettier cache
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # https://github.com/actions/cache/releases/tag/v3.3.2 (pinned to the commit SHA)
-        with:
-          path: ./.cache/prettier/
-          key: ${{ runner.os }}-prettier-${{ hashFiles('prettier.config.js', 'yarn.lock') }}
-          # We omit `restore-keys` to prevent cache restoration when the Prettier configuration or any third-party dependencies have changed.
-      - name: Install Yarn and third-party dependencies
-        uses: ./.github/actions/yarn-zero-install-cache
-      - name: Run the validation task
-        run: yarn run validate.format
-
-  validate-lint:
-    needs: validate-build # The ESLint configuration in this project uses the ESLint presets; hence, to operate, it requires the build artifacts.
-    name: Has clean code (ESLint)
-    runs-on: ubuntu-22.04
-    timeout-minutes: 1
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # https://github.com/actions/checkout/releases/tag/v4.1.1 (pinned to the commit SHA)
-      - name: Restore the build artifacts
-        uses: ./.github/actions/build-artifacts
-      - name: Restore the ESLint cache
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # https://github.com/actions/cache/releases/tag/v3.3.2 (pinned to the commit SHA)
-        with:
-          path: ./.cache/eslint/
-          key: ${{ runner.os }}-eslint-${{ hashFiles('eslint.config.js', 'yarn.lock') }}
-          # We omit `restore-keys` to prevent cache restoration when the ESLint configuration or any third-party dependencies have changed.
-      - name: Install Yarn and third-party dependencies
-        uses: ./.github/actions/yarn-zero-install-cache
-      - name: Run the validation task
-        run: yarn run validate.lint

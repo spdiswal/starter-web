@@ -5,9 +5,12 @@ author: Steffen Diswal
 runs:
   using: composite
   steps:
-    - name: Restore the build artifacts
-      uses: actions/cache/restore@704facf57e6136b1bc63b828d79edcd491f0ee84 # https://github.com/actions/cache/releases/tag/v3.3.2 (pinned to the commit SHA)
+    - name: Restore build artifacts from the workflow cache
+      uses: actions/cache/restore@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # https://github.com/actions/cache/releases/tag/v4.0.2
       with:
+        # A cache miss should never occur, as the `ci.yml` workflow should have built the project prior to this step.
+        #
+        # CAUTION: The cache key originates from the `ci.yml` workflow.
+        key: can-build-project-${{ runner.os }}-sha256:${{ hashFiles('app/**/*', '!app/**/*.stories.*', '!app/**/*.testdata.*', '!app/**/*.tests.*', '*.ts', '.nvmrc', 'pnpm-lock.yaml', 'tsconfig.json') }}
+        path: dist/
         fail-on-cache-miss: true
-        path: ./packages/*/dist/
-        key: ${{ runner.os }}-build-artifacts-${{ hashFiles('packages/*/*.ts', 'yarn.lock') }}

@@ -31,6 +31,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.6.1",
+		"@rainstormy/updraft": "1.0.0",
 		"@types/node": "20.11.30",
 		"@vitest/coverage-v8": "1.4.0",
 		"@vitest/ui": "1.4.0",
@@ -41,6 +42,7 @@
 	},
 	"// devDependencies": {
 		"@biomejs/biome": "Biome is an opinionated linter and code formatter.",
+		"@rainstormy/updraft": "Updraft is a release automation tool.",
 		"@types/node": "These type definitions cover Node.js modules.",
 		"@vitest/coverage-v8": "This Vitest plugin reports code coverage.",
 		"@vitest/ui": "This Vitest plugin provides a test overview in the web browser.",

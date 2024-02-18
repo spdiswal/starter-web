@@ -13,6 +13,9 @@ devDependencies:
   '@biomejs/biome':
     specifier: 1.6.1
     version: 1.6.1
+  '@rainstormy/updraft':
+    specifier: 1.0.0
+    version: 1.0.0
   '@types/node':
     specifier: 20.11.30
     version: 20.11.30
@@ -436,6 +439,15 @@ packages:
 
   /@polka/url@1.0.0-next.25:
     resolution: {integrity: sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==}
+    dev: true
+
+  /@rainstormy/updraft@1.0.0:
+    resolution: {integrity: sha512-SaCbs2OvK1wupPItDdn8Opr74Sz88xC8Jw56coE0seOL8/M/m+YjX8FlyLTnOV+6HpxcNJQ/52HPACzfJkpHBg==}
+    engines: {node: '>=20.0.0'}
+    hasBin: true
+    dependencies:
+      fast-glob: 3.3.2
+      tslib: 2.6.2
     dev: true
 
   /@rollup/rollup-android-arm-eabi@4.13.0:
