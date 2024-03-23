@@ -20,7 +20,6 @@
 | Task             | Description                                  |
 |------------------|----------------------------------------------|
 | `pnpm check`     | Checks type safety and format.               |
-| `pnpm dev`       | Starts a Vite development server.            |
 | `pnpm fmt`       | Reformats the source code.                   |
 | `pnpm no-verify` | Disables Git hooks.                          |
 | `pnpm ready`     | Installs dependencies and restore Git hooks. |
