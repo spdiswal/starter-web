@@ -4,7 +4,6 @@
 	"search.exclude": {
 		"dist/": true,
 		"node_modules/": true,
-		"storybook-static/": true,
 		"pnpm-lock.yaml": true
 	},
 	"typescript.enablePromptUseWorkspaceTsdk": true,
