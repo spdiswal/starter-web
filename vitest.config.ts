@@ -6,12 +6,6 @@ import tsconfigJson from "./tsconfig.json"
 const projectDirectory = path.join(url.fileURLToPath(import.meta.url), "..")
 
 export default defineConfig(() => ({
-	build: {
-		emptyOutDir: true,
-		minify: "esbuild" as const,
-		reportCompressedSize: false,
-	},
-	plugins: [],
 	resolve: {
 		alias: getAliasesFromTsconfig(),
 	},

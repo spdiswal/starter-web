@@ -8,12 +8,6 @@
 		},
 		{
 			"type": "npm",
-			"script": "dev",
-			"problemMatcher": [],
-			"label": "dev"
-		},
-		{
-			"type": "npm",
 			"script": "fmt",
 			"problemMatcher": [],
 			"label": "fmt"
