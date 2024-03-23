@@ -34,5 +34,5 @@
 		"verbatimModuleSyntax": true
 	},
 	"include": ["**/*.ts", "**/*.tsx"],
-	"exclude": ["dist/", "node_modules/", "storybook-static/"]
+	"exclude": ["dist/", "node_modules/"]
 }
