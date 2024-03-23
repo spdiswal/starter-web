@@ -32,12 +32,6 @@
 		},
 		{
 			"type": "npm",
-			"script": "test.coverage",
-			"problemMatcher": [],
-			"label": "test.coverage"
-		},
-		{
-			"type": "npm",
 			"script": "vi",
 			"problemMatcher": [],
 			"label": "vi"

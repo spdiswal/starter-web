@@ -19,7 +19,6 @@
 		"no-verify": "pnpm lefthook uninstall",
 		"ready": "pnpm install && pnpm lefthook install",
 		"test": "vitest run",
-		"test.coverage": "vitest run --coverage",
 		"vi": "vitest watch --coverage --ui"
 	},
 	"dependencies": {
