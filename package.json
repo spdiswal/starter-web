@@ -25,7 +25,7 @@
 		"tslib": "2.6.2"
 	},
 	"// dependencies": {
-		"tslib": "A runtime library that optimises TypeScript applications when the `importHelpers` option is enabled in `tsconfig.json`."
+		"tslib": "This library optimises TypeScript applications when the `importHelpers` option is enabled in `tsconfig.json`."
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.6.1",
