@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: The semantic version number of the new release on the form <major.minor.patch[-prerelease][+buildinfo]>.
+        description: The semantic version number of the new release on the form <major.minor.patch[-prerelease][+buildinfo]> without any `v` prefix.
         type: string
         required: true
 
